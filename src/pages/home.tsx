@@ -1,14 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { useContext } from 'react';
-import { StyleSheet, Text,  TextInput, SafeAreaView, TouchableOpacity  } from 'react-native';
-import { CpfContext } from '../context/cpfcontext';
-import { Link } from 'expo-router';
-import { useNavigation } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar'
+import { useContext, useEffect } from 'react'
+import { Text,  TextInput, SafeAreaView, TouchableOpacity  } from 'react-native'
+import { CpfContext } from '../context/cpfcontext'
+import { useNavigation } from '@react-navigation/native'
+import { styles } from '../styles'
+import { Camera, CameraType } from 'expo-camera'
+
 
 export default function Home () {
 
     const {cpf, setCpf} = useContext(CpfContext)
     const navigation = useNavigation<any>()
+    const [permission, requestPermission] = Camera.useCameraPermissions()
+
+    useEffect(() => {
+      (async () => {
+        const x = await Camera.getCameraPermissionsAsync()
+        console.log(19, x)
+      })()
+      
+    }, [])
+
+    
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -30,42 +44,5 @@ export default function Home () {
         </TouchableOpacity>
         <StatusBar style="auto" />
         </SafeAreaView>
-    );
+    )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-    justifyContent: 'center',
-    color: 'white',
-    padding: 20
-  },
-  text: {
-    color: 'white',
-    fontSize: 25,
-  },
-  input: {
-    backgroundColor: 'white',
-    width: '100%',
-    height: 40,
-    borderRadius: 5,
-    padding: 8
-  },
-  button: {
-    backgroundColor: '#458',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 4
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    textAlign: 'center'
-  },
-  link: {
-    color: 'white',
-    fontSize: 18,
-    textAlign: 'center'
-  }
-});
