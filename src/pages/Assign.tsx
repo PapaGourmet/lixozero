@@ -1,51 +1,29 @@
-import { useContext, useRef, useState, Children, useEffect, LegacyRef} from 'react'
-import { Text,  SafeAreaView, TouchableOpacity, useWindowDimensions, View  } from 'react-native'
+import { useContext, useRef, useState, Children} from 'react'
+import { Text,  SafeAreaView, TouchableOpacity, View  } from 'react-native'
 import { CpfContext } from '../context/cpfcontext'
 import { Canvas, Path, SkPath, Skia, useCanvasRef, useTouchHandler } from '@shopify/react-native-skia'
 import { styles } from '../styles'
 import { Camera, CameraType } from 'expo-camera'
-import * as FileSystem from 'expo-file-system'
-import { Image } from 'expo-image'
+import { useNavigation } from '@react-navigation/native'
+
 
 
 
 
 export default function Assign () {
 
-  const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj['
+  
     const [paths, setPaths] = useState<SkPath[]>([])
     const {cpf, setCpf} = useContext(CpfContext)
     const [type, setType] = useState(CameraType.front)
     const [permission, requestPermission] = Camera.useCameraPermissions()
-    const [photoUri, setPhotoUri] = useState<string | null | undefined>(null)
     const currentPath = useRef<SkPath | null>(null)
     const ref = useCanvasRef()
     const camRef = useRef<Camera>(null)
-
-    const imageToBase64 = async (imageUri: string) => {
-      try {
-        // Ler o arquivo de imagem do sistema de arquivos local
-        const fileInfo = await FileSystem.getInfoAsync(imageUri)
-        
-        // Verificar se o arquivo existe
-        if (!fileInfo.exists) {
-          throw new Error('Arquivo não encontrado')
-        }
+    const {photoUri, setPhotoUri, setAssing, assign} = useContext(CpfContext)
+    const navigation = useNavigation<any>()
     
-        // Ler o conteúdo do arquivo como base64
-        const base64Data = await FileSystem.readAsStringAsync(imageUri, {
-          encoding: FileSystem.EncodingType.Base64,
-        })
-    
-        return base64Data
-      } catch (error) {
-        console.error('Erro ao converter imagem para base64:', error)
-        return null
-      }
-    }
-
-    
+       
     const onTouch = useTouchHandler(
       {
         onStart: ({x, y}) => {
@@ -75,7 +53,8 @@ export default function Assign () {
       const image = ref.current?.makeImageSnapshot()
       if (image) {
         const base = image.encodeToBase64()
-        console.log(base)
+        setAssing(base)
+        navigation.navigate('Result')
       }
     }
 
@@ -108,13 +87,7 @@ export default function Assign () {
         </View>
 
         <Camera style={styles.camera} type={type} ref={camRef}></Camera>
-        <Image
-        style={styles.image}
-        source={photoUri}
-        placeholder={blurhash}
-        contentFit="cover"
-        transition={1000}
-      />
+        
       </SafeAreaView>
     )
 }

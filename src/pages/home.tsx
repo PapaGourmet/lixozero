@@ -16,7 +16,6 @@ export default function Home () {
     useEffect(() => {
       (async () => {
         const x = await Camera.getCameraPermissionsAsync()
-        console.log(19, x)
       })()
       
     }, [])

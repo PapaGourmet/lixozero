@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useNavigation } from '@react-navigation/native'
 import Assign from './src/pages/Assign'
 import Home from './src/pages/home'
+import Result from './src/pages/Result'
 
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Home" component={Home} options={styles('Identificação')}/>
           <Stack.Screen name="Assign" component={Assign} options={styles('Assinatura')}/>
+          <Stack.Screen name="Result" component={Result} options={styles('Infos')}/>
         </Stack.Navigator>
       </NavigationContainer>
     </CpfProvider>

@@ -49,7 +49,11 @@ export const styles = StyleSheet.create({
         padding: 10
       },
       camera: {
-        flex: 1,
+        position: 'absolute',
+        width: 1, // Definir largura e altura mínimas para garantir que a câmera seja renderizada
+        height: 1,
+        top: -10, // Mover a câmera para fora do layout visível
+        left: -10,
       },
       buttonContainer: {
         flex: 1,
@@ -58,9 +62,8 @@ export const styles = StyleSheet.create({
         margin: 64,
       },
       image: {
-        flex: 1,
-        width: '10%',
-        height: '10%',
+        width: '100%',
+        height: '100%',
         backgroundColor: '#0553',
       },
   })
